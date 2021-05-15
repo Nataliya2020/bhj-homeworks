@@ -5,18 +5,19 @@ const tooltipPlace = document.createElement('div');
 let tooltipText;
 
 for (let tooltip of hasTooltip) {
-  tooltip.addEventListener('click', listenDocument)
+  tooltip.addEventListener('click', listenHasTooltip)
 }
 
-function listenDocument(event) {
+function listenHasTooltip(event) {
+
   const target = event.target
   checkHasTooltip(target);
   event.preventDefault();
 }
 
 function checkHasTooltip(target) {
-  if (target.nextElementSibling && target.nextElementSibling.classList.contains('tooltip')) {
-    target.nextElementSibling.remove();
+  if (target.nextElementSibling && target.nextElementSibling.classList.contains('tooltip_active')) {
+    target.nextElementSibling.classList.remove('tooltip_active');
     return;
   }
 
@@ -24,4 +25,10 @@ function checkHasTooltip(target) {
   tooltipPlace.className = 'tooltip tooltip_active';
   tooltipPlace.innerHTML = tooltipText;
   target.after(tooltipPlace);
+
+  let coords = target.getBoundingClientRect();
+
+  tooltipPlace.style.left = coords.left + 'px';
+  let tooltipPlaceCoords = tooltipPlace.getBoundingClientRect();
+  tooltipPlace.style.top = coords.top + tooltipPlaceCoords.height - 7 + 'px';
 }

@@ -6,25 +6,30 @@ let tasksList = document.getElementById('tasks__list');
 
 taskInput.value = '';
 
-taskAdd.addEventListener('click', (event) => event.preventDefault());
-taskInput.addEventListener('keyup', addTask);
+taskAdd.addEventListener('click', acceptingTaskButton);
+taskInput.addEventListener('keyup', acceptingTaskEnter);
 tasksList.addEventListener('click', checkForDeletion)
 
-function addTask(event) {
+function acceptingTaskButton(event) {
+  event.preventDefault();
+  addTask();
+}
+
+function acceptingTaskEnter(event) {
+
   if (event.key !== 'Enter') {
     return;
   }
 
+  addTask();
+}
+
+function addTask() {
   let taskText = taskInput.value;
-  let count = 0;
 
-  for (let symbol of taskText) {
-    if (symbol === ' ') {
-      count++;
-    }
-  }
+  taskText = taskText.trim();
 
-  if (!taskText || count === taskText.length) {
+  if (!taskText) {
     return;
   }
 
@@ -40,9 +45,7 @@ function addTask(event) {
 }
 
 function checkForDeletion(event) {
-  if (!event.target.classList.contains('task__remove')) {
-    return;
-  } else {
+  if (event.target.classList.contains('task__remove')) {
     removeTask(event);
   }
 }
